@@ -1,0 +1,139 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>ToDo問題</title>
+  </head>
+  <body>
+    <h1>ToDo問題</h1>
+    <form id = "statusRadio">
+      <input type="radio" name="checkRadio" value="all">全て
+      <input type="radio" name="checkRadio" value="working">作業中
+      <input type="radio" name="checkRadio" value="finish">完了
+    </form>
+    <table id = "targetTable">
+      <tr>
+        <th>ID</th>
+        <th>コメント</th>
+        <th>状態</th>
+      </tr>
+    </table>
+<h2>新規タスクの追加</h2>
+<div>
+  <input type="text" id="form" size="21">
+  <input type="button" id ="addition" value="追加">
+</div>
+  <script>
+    let todos = []  // 空配列を宣言
+    const table = document.getElementById("targetTable");  // テーブルを変数化
+// ===================================
+// ラジオボタンの状態取得関数
+// =================================== 
+    const takeRadioStatus = () => {
+      const element = document.getElementById("statusRadio") ;// form要素を取得
+      let radioNodeList = element.checkRadio ;
+      let checkedBtn = radioNodeList.value ;
+      if ( checkedBtn === "" ) {
+        return("nothing")// 未選択状態
+      } else {// checkedBtnには選択状態の値が代入されている
+        return(checkedBtn) ;
+      }
+    };
+// ===================================
+// テーブルを作成する関数(状態よってふるい分け)
+// ===================================
+    const createTable = (todos, i) => {
+      const newRow = table.insertRow();   // 空行を作成
+      newRow.dataset.index = i ; // 配列のインデックスからカスタムデータ属性作成
+      const idCell = newRow.insertCell();   // id空セルを作成
+      let id = document.createTextNode(i);  // 配列のインデックスを取得
+      idCell.appendChild(id); // インデックスを表示 
+
+      const commentCell = newRow.insertCell(); // コメント空セルを作成
+      commentCell.appendChild(todos[i]["task"]);  // コメントを挿入
+
+      const btnCell = newRow.insertCell();  // ボタン用の空行を作成
+      const statusBtn = document.createElement("input");  // 状態ボタン作成
+      statusBtn.type = "button";
+      statusBtn.classList.add("statusbtn"); 
+      statusBtn.dataset.index = i ; // 配列のインデックスからカスタムデータ属性作成
+      if (todos[i]["status"] === 1){ // 状態が１の時は「作業中」          
+        statusBtn.value = "作業中";
+        btnCell.appendChild(statusBtn);
+      } else {
+        statusBtn.value = "完了";
+        btnCell.appendChild(statusBtn);
+      }
+      const deleteBtn = document.createElement("input");  // 削除ボタン作成
+      deleteBtn.type = "button";
+      deleteBtn.classList.add("deleteBtn");
+      deleteBtn.dataset.index = i ;  // 配列のインデックスからカスタムデータ属性作成
+      deleteBtn.value = "削除"
+      btnCell.appendChild(deleteBtn);
+    }; 
+// ===================================
+// 配列を回す関数（テーブルを表示する関数）
+// ===================================
+    const displayTodos = (todos) => {
+      while(table.rows[1])table.deleteRow(1); // テーブルの一畳目以降を全て削除    
+      const radioStatus = takeRadioStatus();  // ラジオボタンの状態を取得
+
+      for (let i = 0; i < todos.length; i++) { 
+        if (radioStatus === "working" && todos[i]["status"] === 1) {
+          createTable(todos, i);
+        } else if (radioStatus === "finish" && todos[i]["status"] === 2) {
+          createTable(todos, i);
+        } else if (radioStatus === "all" || radioStatus === "nothing") {
+          createTable(todos, i);
+        }
+      }
+    };
+// ===================================
+// 追加した場合
+// ===================================
+    document.getElementById("addition").addEventListener("click", () => { // 追加を押した場合
+      let todo = {} // 各タスクの連想配列
+      if (document.getElementById("form").value === "") { // フォームが空欄の場合
+        alert('フォームに入力してください');
+        return;
+      }
+      let task = document.createTextNode(document.getElementById("form").value); // フォームの中身を取得
+      document.getElementById("form").value = "";  // フォームを空にする
+      todo["task"] = task;
+      todo["status"] = 1;
+      todos.push(todo);  // タスクをtodoに追加        
+      displayTodos(todos);  // テーブル表示関数を呼び出す        
+    });
+// ===================================
+// 削除した場合
+// =================================== 
+    document.addEventListener("click",(e) => {  // 削除ボタンがクリック
+      if (e.target.className ==="deleteBtn") {  // 削除ボタンが存在する時（読み込みエラー回避）
+        let targetIndex = e.target.dataset.index;  // 削除ボタンのカスタムデータ属性取得
+        todos.splice(parseFloat(targetIndex), 1); //配列から削除
+        displayTodos(todos);
+      } 
+    });
+// ===================================
+// 状態変更した場合
+// =================================== 
+    document.addEventListener("click",(e) => {  // 変更ボタンがクリック
+      if (e.target.className ==="statusbtn") {  // 変更ボタンが存在する時（読み込みエラー回避）
+        let targetIndex = e.target.dataset.index;  // 変更ボタンのカスタムデータ属性取得
+        if (todos[targetIndex]["status"] == 1) {// 変更ボタンの状態により表示変更
+          todos[targetIndex]["status"] = 2;
+        } else {
+          todos[targetIndex]["status"] = 1;
+        }
+        displayTodos(todos);
+      }
+    });
+// ===================================
+// ラジオボタンをクリックした時
+// =================================== 
+    document.getElementById("statusRadio").addEventListener("click",() => { 
+      displayTodos(todos);
+    });
+    </script>
+  </body>
+</html>
