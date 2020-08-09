@@ -6,9 +6,9 @@
   </head>
 
   <body>
-    <h1>ようこそ</h1>
+    <h1 id = infomation>ようこそ</h1>
     <hr width="100%">
-      <p id = "infomation">以下のボタンをクリック</p>
+      <p id = "quiz_display">以下のボタンをクリック</p>
     <hr width="100%">
     <button type="button" name="aaa" id = "start_btn">
       開始
@@ -16,17 +16,21 @@
     <script>
       document.getElementById("start_btn").addEventListener("click", () => { // 開始を押した場合
         document.getElementById("infomation").innerText = "取得中";
+        document.getElementById("quiz_display").innerText = "少々お待ちください";
+
+        const start_btn = document.getElementById("start_btn");  // 開始ボタンを削除
+        start_btn.parentNode.removeChild(start_btn);
+
         fetch('https://opentdb.com/api.php?amount=10')
         .then((response) => {
-          console.log(response)
-          if(response.ok) { // ステータスがokならば
-            return response.text(); // レスポンスをテキストとして変換する
-          } else {
-            throw new Error();
-          }
+        return response.json();
         })
-        .then((text) => console.log(text))
-        .catch((error) => console.log(error));
+        .then((json) => {
+        let quiz_array = json.results;
+        console.log(quiz_array);
+        document.getElementById("infomation").innerText = "第一問";
+        })
+        .then()
       });    
     </script>
 
