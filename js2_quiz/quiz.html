@@ -6,7 +6,10 @@
   </head>
 
   <body>
-    <h1 id = infomation>ようこそ</h1>
+    <h1 id = "infomation">ようこそ</h1>
+    <h3 id = "genre_display"></h3>
+    <h3 id = "dificult_display"></h3>
+
     <hr width="100%">
       <p id = "quiz_display">以下のボタンをクリック</p>
     <hr width="100%">
@@ -14,6 +17,15 @@
       開始
     </button>
     <script>
+      const present_quiz = (quiz_array) => {
+        var count = 0;
+        var quiz_number = count + 1;
+        console.log(quiz_array);
+        document.getElementById("infomation").innerText = "問題" + quiz_number;
+        document.getElementById("genre_display").innerText = "[ジャンル]" + quiz_array[count]["category"] ;
+        document.getElementById("dificult_display").innerText = "[難易度]" + quiz_array[count]["difficulty"] ;
+        document.getElementById("quiz_display").innerText = "[難易度]" + quiz_array[count]["question"] ;
+      }
       document.getElementById("start_btn").addEventListener("click", () => { // 開始を押した場合
         document.getElementById("infomation").innerText = "取得中";
         document.getElementById("quiz_display").innerText = "少々お待ちください";
@@ -27,10 +39,8 @@
         })
         .then((json) => {
         let quiz_array = json.results;
-        console.log(quiz_array);
-        document.getElementById("infomation").innerText = "第一問";
+        present_quiz(quiz_array)
         })
-        .then()
       });    
     </script>
 
