@@ -19,31 +19,32 @@
     <div id = "answer_btns">
     </div>
     <script>
-      const create_answers = (randam_answers) => {// 答えを作る
+      const create_answers = (randam_answers, correct_answer_word) => {// 答えをボタンを作る関数
         for(let i = 0; i < randam_answers.length; i++){
           let div = document.createElement("div");
           document.getElementById("answer_btns").appendChild(div);
           let button = document.createElement("BUTTON");
           button.textContent = randam_answers[i];
+          if (randam_answers[i] === correct_answer_word){
+            button.id = "correct_answer_button"
+          }
           div.appendChild(button);
         }
       };
 
       const shaffule_answers = (target_quiz) =>{// 正解と不正解をランダムに混ぜる関数
         var all_answers = target_quiz["incorrect_answers"].push(target_quiz["correct_answer"]);// 正解と不正解を同じ配列に
-
+        var correct_answer_word = target_quiz["correct_answer"]
         for(let i = target_quiz["incorrect_answers"].length - 1; i > 0; i--){          // シャッフルする
           let j = Math.floor(Math.random() * (i + 1));
           let tmp = target_quiz["incorrect_answers"][i];
           target_quiz["incorrect_answers"][i] = target_quiz["incorrect_answers"][j];
           target_quiz["incorrect_answers"][j] = tmp;
         }
-        // console.log(target_quiz["correct_answer"]);
-        //   console.log(target_quiz["incorrect_answers"]);
         var randam_answers = target_quiz["incorrect_answers"]
-        create_answers(randam_answers);// 答えを作る関数を呼び出す
+        create_answers(randam_answers, correct_answer_word);// 答えボタンを作る関数を呼び出す
       }
-      const present_quiz = (quiz_array) => {
+      const present_quiz = (quiz_array) => {// 　クイズを表示する関数
         let count = 0;
         let target_quiz = quiz_array[count];
         let quiz_number = count + 1;
