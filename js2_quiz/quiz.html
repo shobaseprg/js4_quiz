@@ -13,18 +13,62 @@
     <hr width="100%">
       <p id = "quiz_display">以下のボタンをクリック</p>
     <hr width="100%">
-    <button type="button" name="aaa" id = "start_btn">
+    <button type="button" id = "start_btn">
       開始
     </button>
+    <div id = "answer_btns" style = "display:none;">
+      <div>
+        <button type="button" id = "answer_btn">
+        </button>
+      </div>
+      <div>
+        <button type="button" id = "answer_btn">
+        </button>
+      </div>
+      <div>
+        <button type="button" id = "answer_btn">
+        </button>
+      </div>
+      <div>
+        <button type="button" id = "answer_btn">
+        </button>
+      </div>
+    </div>
+
     <script>
+      const create_answer = (randam_answer) => {// 答えを作る   
+        document.getElementById("answer_btns").style.removeProperty("display");
+      }
+
+      const randam_answer = (target_quiz) =>{// 正解と不正解をランダムに混ぜる関数
+        var all_answers = target_quiz["incorrect_answers"].push(target_quiz["correct_answer"]);// 正解と不正解を同じ配列に
+
+        for(var i = target_quiz["incorrect_answers"].length - 1; i > 0; i--){          // シャッフルする
+          var j = Math.floor(Math.random() * (i + 1));
+          var tmp = target_quiz["incorrect_answers"][i];
+          target_quiz["incorrect_answers"][i] = target_quiz["incorrect_answers"][j];
+          target_quiz["incorrect_answers"][j] = tmp;
+        }
+        // console.log(target_quiz["correct_answer"]);
+        //   console.log(target_quiz["incorrect_answers"]);
+        var random_answers = target_quiz["incorrect_answers"]
+        create_answer(randam_answer);// 答えを作る関数を呼び出す
+      }
       const present_quiz = (quiz_array) => {
-        var count = 0;
-        var quiz_number = count + 1;
-        console.log(quiz_array);
+        let count = 0;
+        let target_quiz = quiz_array[count];
+        let quiz_number = count + 1;
         document.getElementById("infomation").innerText = "問題" + quiz_number;
-        document.getElementById("genre_display").innerText = "[ジャンル]" + quiz_array[count]["category"] ;
-        document.getElementById("dificult_display").innerText = "[難易度]" + quiz_array[count]["difficulty"] ;
-        document.getElementById("quiz_display").innerText = "[難易度]" + quiz_array[count]["question"] ;
+        document.getElementById("genre_display").innerText = "[ジャンル]" + target_quiz["category"] ;
+        document.getElementById("dificult_display").innerText = "[難易度]" + target_quiz["difficulty"] ;
+        document.getElementById("quiz_display").innerText = quiz_array[count]["question"] ;
+
+        randam_answer(target_quiz);
+
+        // console.log(quiz_array[count]["correct_answer"]);
+        // console.log(quiz_array[count]["incorrect_answers"]);
+        // console.log(quiz_array);
+
       }
       document.getElementById("start_btn").addEventListener("click", () => { // 開始を押した場合
         document.getElementById("infomation").innerText = "取得中";
