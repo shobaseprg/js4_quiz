@@ -81,13 +81,13 @@
 // ===================================
 // 答えボタンを作る関数
 // ===================================
-      const createAnswers = (randamAnswers, correctAnswerWord) => {
-        for (let i = 0; i < randamAnswers.length; i++) {
+      const createAnswers = (randomAnswers, correctAnswerWord) => {
+        for (let i = 0; i < randomAnswers.length; i++) {
           let div = document.createElement("div");
           answerBtns.appendChild(div);
           let button = document.createElement("BUTTON");
-          button.textContent = randamAnswers[i];
-          if (randamAnswers[i] === correctAnswerWord) {
+          button.textContent = randomAnswers[i];
+          if (randomAnswers[i] === correctAnswerWord) {
             button.id = "correct_answer_button"
           } else {
             button.classList.add("incorrect_answer_button");
@@ -99,7 +99,7 @@
 // 正解と不正解をランダムに混ぜる関数
 // ===================================
       const shaffuleAnswers = (targetQuiz) => {
-        targetQuiz["incorrect_answers"].push(targetQuiz["correct_answer"]);// 正解と不正解を同じ配列に
+        targetQuiz["incorrect_answers"].push(targetQuiz["correct_answer"]);  // 正解と不正解を同じ配列に
         let correctAnswerWord = targetQuiz["correct_answer"];
         for (let i = targetQuiz["incorrect_answers"].length - 1; i > 0; i--) {  // シャッフルする
           let j = Math.floor(Math.random() * (i + 1));
@@ -107,8 +107,8 @@
           targetQuiz["incorrect_answers"][i] = targetQuiz["incorrect_answers"][j];
           targetQuiz["incorrect_answers"][j] = tmp;
         }
-        var randamAnswers = targetQuiz["incorrect_answers"];
-        createAnswers(randamAnswers, correctAnswerWord);
+        let randomAnswers = targetQuiz["incorrect_answers"];
+        createAnswers(randomAnswers, correctAnswerWord);
       };
 // ===================================
 // クイズを表示する関数
