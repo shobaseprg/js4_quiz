@@ -5,16 +5,16 @@
     <title>クイズ問題</title>
   </head>
   <body>
-    <h1 id = "infomation">ようこそ</h1>
-    <h3 id = "genre_display"></h3>
-    <h3 id = "dificult_display"></h3>
+    <h1 id="infomation">ようこそ</h1>
+    <h3 id="genre_display"></h3>
+    <h3 id="dificult_display"></h3>
     <hr width="100%">
-      <p id = "quiz_display">以下のボタンをクリック</p>
+      <p id="quiz_display">以下のボタンをクリック</p>
     <hr width="100%">
-    <button type="button" id = "start_btn">
+    <button type="button" id="start_btn">
       開始
     </button>
-    <div id = "answer_btns">
+    <div id="answer_btns">
     </div>
     <script>
       let correct_number = 0;
@@ -68,7 +68,7 @@
 // 不正解ボタンを押した場合
 // ===================================
       document.addEventListener("click", (e) => {  
-        if (e.target.className ==="incorrect_answer_button") { 
+        if (e.target.className === "incorrect_answer_button") { 
           delete_answer(); 
           present_quiz(quiz_array);
         } 
