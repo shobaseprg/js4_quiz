@@ -3,14 +3,19 @@
   <head>
     <meta charset="utf-8">
     <title>クイズ問題</title>
+    <style>
+      .line{
+        width: 100%;
+      }
+    </style>
   </head>
   <body>
-    <h1 id="infomation">ようこそ</h1>
+    <h1 id="information">ようこそ</h1>
     <h3 id="genre_display"></h3>
     <h3 id="dificult_display"></h3>
-    <hr width="100%">
-      <p id="quiz_display">以下のボタンをクリック</p>
-    <hr width="100%">
+    <hr class="line">
+    <p id="quiz_display">以下のボタンをクリック</p>
+    <hr class="line">
     <button type="button" id="start_btn">
       開始
     </button>
@@ -20,7 +25,7 @@
       let correct_number = 0;
       let count = 0;
       let quiz_array = [];
-      const infomation = document.getElementById("infomation");
+      const information = document.getElementById("information");
       const genre_display = document.getElementById("genre_display");
       const dificult_display = document.getElementById("dificult_display");
       const quiz_display = document.getElementById("quiz_display");
@@ -37,7 +42,7 @@
 // 結果を表示する関数
 // ===================================
       const result_display = () => {
-        infomation.innerText = "あなたの正解数は" + correct_number + "です!!";
+        information.innerText = "あなたの正解数は" + correct_number + "です!!";
         genre_display.innerHTML = "";
         dificult_display.innerHTML = "";
         quiz_display.innerHTML = "再度挑戦したい場合は、以下をクリック";
@@ -115,7 +120,7 @@
         }
         let target_quiz = quiz_array[count];
         let quiz_number = count + 1;
-        infomation.innerText = "問題" + quiz_number;
+        information.innerText = "問題" + quiz_number;
         genre_display.innerText = "[ジャンル]" + target_quiz["category"];
         dificult_display.innerText = "[難易度]" + target_quiz["difficulty"];
         quiz_display.innerText = quiz_array[count]["question"];
@@ -127,7 +132,7 @@
 // 開始ボタンを押した時
 // ===================================
       document.getElementById("start_btn").addEventListener("click", () => { // 開始を押した場合
-        infomation.innerText = "取得中";
+        information.innerText = "取得中";
         quiz_display.innerText = "少々お待ちください";
 
         const start_btn = document.getElementById("start_btn");  // 開始ボタンを削除
