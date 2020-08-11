@@ -12,7 +12,7 @@
   <body>
     <h1 id="information">ようこそ</h1>
     <h3 id="genre_display"></h3>
-    <h3 id="dificult_display"></h3>
+    <h3 id="difficult_display"></h3>
     <hr class="line">
     <p id="quiz_display">以下のボタンをクリック</p>
     <hr class="line">
@@ -27,7 +27,7 @@
       let quiz_array = [];
       const information = document.getElementById("information");
       const genre_display = document.getElementById("genre_display");
-      const dificult_display = document.getElementById("dificult_display");
+      const difficult_display = document.getElementById("difficult_display");
       const quiz_display = document.getElementById("quiz_display");
       const answer_btns = document.getElementById("answer_btns");
 // ===================================
@@ -44,7 +44,7 @@
       const result_display = () => {
         information.innerText = "あなたの正解数は" + correct_number + "です!!";
         genre_display.innerHTML = "";
-        dificult_display.innerHTML = "";
+        difficult_display.innerHTML = "";
         quiz_display.innerHTML = "再度挑戦したい場合は、以下をクリック";
         let button = document.createElement("BUTTON");
         answer_btns.appendChild(button);
@@ -122,7 +122,7 @@
         let quiz_number = count + 1;
         information.innerText = "問題" + quiz_number;
         genre_display.innerText = "[ジャンル]" + target_quiz["category"];
-        dificult_display.innerText = "[難易度]" + target_quiz["difficulty"];
+        difficult_display.innerText = "[難易度]" + target_quiz["difficulty"];
         quiz_display.innerText = quiz_array[count]["question"];
 
         shaffule_answers(target_quiz);
