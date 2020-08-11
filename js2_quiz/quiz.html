@@ -22,14 +22,14 @@
     <div id="answer_btns">
     </div>
     <script>
-      let correct_number = 0;
+      let correctNumber = 0;
       let count = 0;
-      let quiz_array = [];
+      let quizArray = [];
       const information = document.getElementById("information");
-      const genre_display = document.getElementById("genre_display");
-      const difficult_display = document.getElementById("difficult_display");
-      const quiz_display = document.getElementById("quiz_display");
-      const answer_btns = document.getElementById("answer_btns");
+      const genreDisplay = document.getElementById("genre_display");
+      const difficultDisplay = document.getElementById("difficult_display");
+      const quizDisplay = document.getElementById("quiz_display");
+      const answerBtns = document.getElementById("answer_btns");
 // ===================================
 // 再開する関数
 // ===================================
@@ -41,22 +41,22 @@
 // ===================================
 // 結果を表示する関数
 // ===================================
-      const result_display = () => {
-        information.innerText = "あなたの正解数は" + correct_number + "です!!";
-        genre_display.innerHTML = "";
-        difficult_display.innerHTML = "";
-        quiz_display.innerHTML = "再度挑戦したい場合は、以下をクリック";
+      const resultDisplay = () => {
+        information.innerText = "あなたの正解数は" + correctNumber + "です!!";
+        genreDisplay.innerHTML = "";
+        difficultDisplay.innerHTML = "";
+        quizDisplay.innerHTML = "再度挑戦したい場合は、以下をクリック";
         let button = document.createElement("BUTTON");
-        answer_btns.appendChild(button);
+        answerBtns.appendChild(button);
         button.id = "restart";
         button.textContent = "ホームに戻る";
       };
 // ===================================
 // 回答を消去する関数
 // ===================================
-      const delete_answer = () => {
-        while(answer_btns.firstChild){
-          answer_btns.removeChild(answer_btns.firstChild);
+      const deleteAnswer = () => {
+        while(answerBtns.firstChild){
+          answerBtns.removeChild(answerBtns.firstChild);
         }
       };
 // ===================================
@@ -64,9 +64,9 @@
 // ===================================
       document.addEventListener("click", (e) => {  
         if (e.target.id ==="correct_answer_button") {  
-          correct_number += 1;
-          delete_answer();
-          present_quiz(quiz_array);
+          correctNumber += 1;
+          deleteAnswer();
+          presentQuiz(quizArray);
         } 
       });
 // ===================================
@@ -74,22 +74,22 @@
 // ===================================
       document.addEventListener("click", (e) => {  
         if (e.target.className === "incorrect_answer_button") { 
-          delete_answer(); 
-          present_quiz(quiz_array);
+          deleteAnswer(); 
+          presentQuiz(quizArray);
         } 
     });
 // ===================================
 // 答えボタンを作る関数
 // ===================================
-      const create_answers = (randam_answers, correct_answer_word) => {
-        for (let i = 0; i < randam_answers.length; i++) {
+      const createAnswers = (randamAnswers, correctAnswerWord) => {
+        for (let i = 0; i < randamAnswers.length; i++) {
           let div = document.createElement("div");
-          answer_btns.appendChild(div);
+          answerBtns.appendChild(div);
           let button = document.createElement("BUTTON");
-          button.textContent = randam_answers[i];
-          if (randam_answers[i] === correct_answer_word) {
+          button.textContent = randamAnswers[i];
+          if (randamAnswers[i] === correctAnswerWord) {
             button.id = "correct_answer_button"
-          }　else {
+          } else {
             button.classList.add("incorrect_answer_button");
           }
           div.appendChild(button);
@@ -98,34 +98,34 @@
 // ===================================
 // 正解と不正解をランダムに混ぜる関数
 // ===================================
-      const shaffule_answers = (target_quiz) => {
-        var all_answers = target_quiz["incorrect_answers"].push(target_quiz["correct_answer"]);// 正解と不正解を同じ配列に
-        var correct_answer_word = target_quiz["correct_answer"];
-        for (let i = target_quiz["incorrect_answers"].length - 1; i > 0; i--) {          // シャッフルする
+      const shaffuleAnswers = (targetQuiz) => {
+        targetQuiz["incorrect_answers"].push(targetQuiz["correct_answer"]);// 正解と不正解を同じ配列に
+        let correctAnswerWord = targetQuiz["correct_answer"];
+        for (let i = targetQuiz["incorrect_answers"].length - 1; i > 0; i--) {  // シャッフルする
           let j = Math.floor(Math.random() * (i + 1));
-          let tmp = target_quiz["incorrect_answers"][i];
-          target_quiz["incorrect_answers"][i] = target_quiz["incorrect_answers"][j];
-          target_quiz["incorrect_answers"][j] = tmp;
+          let tmp = targetQuiz["incorrect_answers"][i];
+          targetQuiz["incorrect_answers"][i] = targetQuiz["incorrect_answers"][j];
+          targetQuiz["incorrect_answers"][j] = tmp;
         }
-        var randam_answers = target_quiz["incorrect_answers"];
-        create_answers(randam_answers, correct_answer_word);
+        var randamAnswers = targetQuiz["incorrect_answers"];
+        createAnswers(randamAnswers, correctAnswerWord);
       };
 // ===================================
 // クイズを表示する関数
 // ===================================
-      const present_quiz = (quiz_array) => {
+      const presentQuiz = (quizArray) => {
         if (count === 10) {
-          result_display();
+          resultDisplay();
           return;
         }
-        let target_quiz = quiz_array[count];
-        let quiz_number = count + 1;
-        information.innerText = "問題" + quiz_number;
-        genre_display.innerText = "[ジャンル]" + target_quiz["category"];
-        difficult_display.innerText = "[難易度]" + target_quiz["difficulty"];
-        quiz_display.innerText = quiz_array[count]["question"];
+        let targetQuiz = quizArray[count];
+        let quizNumber = count + 1;
+        information.innerText = "問題" + quizNumber;
+        genreDisplay.innerText = "[ジャンル]" + targetQuiz["category"];
+        difficultDisplay.innerText = "[難易度]" + targetQuiz["difficulty"];
+        quizDisplay.innerText = quizArray[count]["question"];
 
-        shaffule_answers(target_quiz);
+        shaffuleAnswers(targetQuiz);
         count += 1;
       };
 // ===================================
@@ -133,18 +133,18 @@
 // ===================================
       document.getElementById("start_btn").addEventListener("click", () => { // 開始を押した場合
         information.innerText = "取得中";
-        quiz_display.innerText = "少々お待ちください";
+        quizDisplay.innerText = "少々お待ちください";
 
-        const start_btn = document.getElementById("start_btn");  // 開始ボタンを削除
-        start_btn.parentNode.removeChild(start_btn);
+        const startBtn = document.getElementById("start_btn");  // 開始ボタンを削除
+        startBtn.parentNode.removeChild(start_btn);
 
         fetch('https://opentdb.com/api.php?amount=10')
         .then((response) => {
           return response.json();
         })
         .then((json) => {
-          quiz_array = json.results;
-          present_quiz(quiz_array);
+          quizArray = json.results;
+          presentQuiz(quizArray);
         });
       });    
     </script>
