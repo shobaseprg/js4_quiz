@@ -30,17 +30,17 @@
       const difficultDisplay = document.getElementById("difficult_display");
       const quizDisplay = document.getElementById("quiz_display");
       const answerBtns = document.getElementById("answer_btns");
-// ===================================
-// 再開する関数
-// ===================================
+      // ===================================
+      // 再開する関数
+      // ===================================
       document.addEventListener("click",(e) => {  
         if (e.target.id === "restart") {  
           location.reload();
         }
       });
-// ===================================
-// 結果を表示する関数
-// ===================================
+      // ===================================
+      // 結果を表示する関数
+      // ===================================
       const resultDisplay = () => {
         information.innerText = "あなたの正解数は" + correctNumber + "です!!";
         genreDisplay.innerHTML = "";
@@ -51,36 +51,36 @@
         button.id = "restart";
         button.textContent = "ホームに戻る";
       };
-// ===================================
-// 回答を消去する関数
-// ===================================
+      // ===================================
+      // 回答を消去する関数
+      // ===================================
       const deleteAnswer = () => {
         while(answerBtns.firstChild){
           answerBtns.removeChild(answerBtns.firstChild);
         }
       };
-// ===================================
-// 正解ボタンを押した場合
-// ===================================
+      // ===================================
+      // 正解ボタンを押した場合
+      // ===================================
       document.addEventListener("click", (e) => {  
-        if (e.target.id ==="correct_answer_button") {  
+        if (e.target.id === "correct_answer_button") {  
           correctNumber += 1;
           deleteAnswer();
           presentQuiz(quizArray);
         } 
       });
-// ===================================
-// 不正解ボタンを押した場合
-// ===================================
+      // ===================================
+      // 不正解ボタンを押した場合
+      // ===================================
       document.addEventListener("click", (e) => {  
         if (e.target.className === "incorrect_answer_button") { 
           deleteAnswer(); 
           presentQuiz(quizArray);
         } 
     });
-// ===================================
-// 答えボタンを作る関数
-// ===================================
+      // ===================================
+      // 答えボタンを作る関数
+      // ===================================
       const createAnswers = (randomAnswers, correctAnswerWord) => {
         for (let i = 0; i < randomAnswers.length; i++) {
           let div = document.createElement("div");
@@ -95,9 +95,9 @@
           div.appendChild(button);
         }
       };
-// ===================================
-// 正解と不正解をランダムに混ぜる関数
-// ===================================
+      // ===================================
+      // 正解と不正解をランダムに混ぜる関数
+      // ===================================
       const shaffuleAnswers = (targetQuiz) => {
         targetQuiz["incorrect_answers"].push(targetQuiz["correct_answer"]);  // 正解と不正解を同じ配列に
         let correctAnswerWord = targetQuiz["correct_answer"];
@@ -110,9 +110,9 @@
         let randomAnswers = targetQuiz["incorrect_answers"];
         createAnswers(randomAnswers, correctAnswerWord);
       };
-// ===================================
-// クイズを表示する関数
-// ===================================
+      // ===================================
+      // クイズを表示する関数
+      // ===================================
       const presentQuiz = (quizArray) => {
         if (count === 10) {
           resultDisplay();
@@ -128,9 +128,9 @@
         shaffuleAnswers(targetQuiz);
         count += 1;
       };
-// ===================================
-// 開始ボタンを押した時
-// ===================================
+      // ===================================
+      // 開始ボタンを押した時
+      // ===================================
       document.getElementById("start_btn").addEventListener("click", () => { // 開始を押した場合
         information.innerText = "取得中";
         quizDisplay.innerText = "少々お待ちください";
