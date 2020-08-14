@@ -1,5 +1,5 @@
 <!doctype html>
-<html  lang="ja">
+<html lang="ja">
   <head>
     <meta charset="utf-8">
     <title>クイズ問題</title>
@@ -98,10 +98,12 @@
       // ===================================
       // 正解と不正解をランダムに混ぜる関数
       // ===================================
-      const shaffuleAnswers = (targetQuiz) => {
-        targetQuiz["incorrect_answers"].push(targetQuiz["correct_answer"]);  // 正解と不正解を同じ配列に
+      const shuffleAnswers = (targetQuiz) => {
+        targetQuiz["incorrect_answers"].push(targetQuiz["correct_answer"]);  
+        // 正解と不正解を同じ配列に
         let correctAnswerWord = targetQuiz["correct_answer"];
-        for (let i = targetQuiz["incorrect_answers"].length - 1; i > 0; i--) {  // シャッフルする
+        for (let i = targetQuiz["incorrect_answers"].length - 1; i > 0; i--) {  
+          // シャッフルする
           let j = Math.floor(Math.random() * (i + 1));
           let tmp = targetQuiz["incorrect_answers"][i];
           targetQuiz["incorrect_answers"][i] = targetQuiz["incorrect_answers"][j];
@@ -125,7 +127,7 @@
         difficultDisplay.innerText = "[難易度]" + targetQuiz["difficulty"];
         quizDisplay.innerText = quizArray[count]["question"];
 
-        shaffuleAnswers(targetQuiz);
+        shuffleAnswers(targetQuiz);
         count += 1;
       };
       // ===================================
