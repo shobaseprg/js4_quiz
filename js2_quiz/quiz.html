@@ -1,32 +1,154 @@
 <!doctype html>
-<html>
+<html lang="ja">
   <head>
     <meta charset="utf-8">
     <title>クイズ問題</title>
+    <style>
+      .line{
+        width: 100%;
+      }
+    </style>
   </head>
-
   <body>
-    <h1 id = "infomation">ようこそ</h1>
-    <hr width="100%">
-      <p id = "question">以下のボタンをクリック</p>
-    <hr width="100%">
-    <button type="button" name="aaa" id = "start_btn">
+    <h1 id="information">ようこそ</h1>
+    <h3 id="genre_display"></h3>
+    <h3 id="difficult_display"></h3>
+    <hr class="line">
+    <p id="quiz_display">以下のボタンをクリック</p>
+    <hr class="line">
+    <button type="button" id="start_btn">
       開始
     </button>
+    <div id="answer_btns">
+    </div>
     <script>
-      document.getElementById("start_btn").addEventListener("click", () => { // 開始を押した場合
-        document.getElementById("infomation").innerText = "取得中";
-        document.getElementById("question").innerText = "少々お待ちください";
-        fetch('https://opentdb.com/api.php?amount=10', {
-          method: "GET"
-        }).then(function (response){
-          return response.json();
-        }).then(function(myjson){
-          let questions = myjson.results;
-          console.log(questions);
-        })
+      let correctNumber = 0;
+      let count = 0;
+      let quizArray = [];
+      const information = document.getElementById("information");
+      const genreDisplay = document.getElementById("genre_display");
+      const difficultDisplay = document.getElementById("difficult_display");
+      const quizDisplay = document.getElementById("quiz_display");
+      const answerBtns = document.getElementById("answer_btns");
+      // ===================================
+      // 再開する関数
+      // ===================================
+      document.addEventListener("click",(e) => {  
+        if (e.target.id === "restart") {  
+          location.reload();
+        }
       });
-    </script>
+      // ===================================
+      // 結果を表示する関数
+      // ===================================
+      const resultDisplay = () => {
+        information.innerText = "あなたの正解数は" + correctNumber + "です!!";
+        genreDisplay.innerHTML = "";
+        difficultDisplay.innerHTML = "";
+        quizDisplay.innerHTML = "再度挑戦したい場合は、以下をクリック";
+        const button = document.createElement("button");
+        answerBtns.appendChild(button);
+        button.id = "restart";
+        button.textContent = "ホームに戻る";
+      };
+      // ===================================
+      // 回答を消去する関数
+      // ===================================
+      const deleteAnswer = () => {
+        while(answerBtns.firstChild){
+          answerBtns.removeChild(answerBtns.firstChild);
+        }
+      };
+      // ===================================
+      // 正解ボタンを押した場合
+      // ===================================
+      document.addEventListener("click", (e) => {  
+        if (e.target.id === "correct_answer_button") {  
+          correctNumber += 1;
+          deleteAnswer();
+          presentQuiz(quizArray);
+        } 
+      });
+      // ===================================
+      // 不正解ボタンを押した場合
+      // ===================================
+      document.addEventListener("click", (e) => {  
+        if (e.target.className === "incorrect_answer_button") { 
+          deleteAnswer(); 
+          presentQuiz(quizArray);
+        } 
+    });
+      // ===================================
+      // 答えボタンを作る関数
+      // ===================================
+      const createAnswers = (randomAnswers, correctAnswerWord) => {
+        for (let i = 0; i < randomAnswers.length; i++) {
+          let div = document.createElement("div");
+          answerBtns.appendChild(div);
+          let button = document.createElement("BUTTON");
+          button.textContent = randomAnswers[i];
+          if (randomAnswers[i] === correctAnswerWord) {
+            button.id = "correct_answer_button"
+          } else {
+            button.classList.add("incorrect_answer_button");
+          }
+          div.appendChild(button);
+        }
+      };
+      // ===================================
+      // 正解と不正解をランダムに混ぜる関数
+      // ===================================
+      const shuffleAnswers = (targetQuiz) => {
+        targetQuiz["incorrect_answers"].push(targetQuiz["correct_answer"]);  
+        // 正解と不正解を同じ配列に
+        let correctAnswerWord = targetQuiz["correct_answer"];
+        for (let i = targetQuiz["incorrect_answers"].length - 1; i > 0; i--) {  
+          // シャッフルする
+          let j = Math.floor(Math.random() * (i + 1));
+          let tmp = targetQuiz["incorrect_answers"][i];
+          targetQuiz["incorrect_answers"][i] = targetQuiz["incorrect_answers"][j];
+          targetQuiz["incorrect_answers"][j] = tmp;
+        }
+        let randomAnswers = targetQuiz["incorrect_answers"];
+        createAnswers(randomAnswers, correctAnswerWord);
+      };
+      // ===================================
+      // クイズを表示する関数
+      // ===================================
+      const presentQuiz = (quizArray) => {
+        if (count === 10) {
+          resultDisplay();
+          return;
+        }
+        let targetQuiz = quizArray[count];
+        let quizNumber = count + 1;
+        information.innerText = "問題" + quizNumber;
+        genreDisplay.innerText = "[ジャンル]" + targetQuiz["category"];
+        difficultDisplay.innerText = "[難易度]" + targetQuiz["difficulty"];
+        quizDisplay.innerText = quizArray[count]["question"];
 
+        shuffleAnswers(targetQuiz);
+        count += 1;
+      };
+      // ===================================
+      // 開始ボタンを押した時
+      // ===================================
+      document.getElementById("start_btn").addEventListener("click", () => { // 開始を押した場合
+        information.innerText = "取得中";
+        quizDisplay.innerText = "少々お待ちください";
+
+        const startBtn = document.getElementById("start_btn");  // 開始ボタンを削除
+        startBtn.parentNode.removeChild(start_btn);
+
+        fetch('https://opentdb.com/api.php?amount=10')
+        .then((response) => {
+          return response.json();
+        })
+        .then((json) => {
+          quizArray = json.results;
+          presentQuiz(quizArray);
+        });
+      });    
+    </script>
   </body>
 </html>
